@@ -44,6 +44,40 @@ class DownloadFileController {
         }
     }
 
+    @GetMapping("/convert_file")
+    @ResponseBody
+    public String getFromFile(@RequestParam String file, @RequestParam String filetype, @RequestParam String converttype) {
+
+        HashMap convertedResponse = convertResponse(file, filetype);
+
+        switch (converttype){
+            case "json":
+                return convertedResponse.toString();
+            case "csv":
+                String csvResponse = "specialChars, numbers, upperLetters, lowerLetters, otherChars\n";
+                csvResponse = csvResponse.concat(String.valueOf(convertedResponse.get("specialChars"))).concat(",");
+                csvResponse = csvResponse.concat(String.valueOf(convertedResponse.get("numbers"))).concat(",");
+                csvResponse = csvResponse.concat(String.valueOf(convertedResponse.get("upperLetters"))).concat(",");
+                csvResponse = csvResponse.concat(String.valueOf(convertedResponse.get("lowerLetters"))).concat(",");
+                csvResponse = csvResponse.concat(String.valueOf(convertedResponse.get("otherChars")));
+                return csvResponse;
+            case "xml":
+                String xmlResponse = "<?xml version=\"0.8\" encoding=\"UTF-8\" standalone=\"no\"?>";
+                xmlResponse = xmlResponse.concat("<specialChars>").concat(String.valueOf(convertedResponse.get("specialChars"))).concat("</specialChars>");
+                xmlResponse = xmlResponse.concat("<numbers>").concat(String.valueOf(convertedResponse.get("numbers"))).concat("</numbers>");
+                xmlResponse = xmlResponse.concat("<upperLetters>").concat(String.valueOf(convertedResponse.get("upperLetters"))).concat("</upperLetters>");
+                xmlResponse = xmlResponse.concat("<lowerLetters>").concat(String.valueOf(convertedResponse.get("lowerLetters"))).concat("</lowerLetters>");
+                xmlResponse = xmlResponse.concat("<otherChars>").concat(String.valueOf(convertedResponse.get("otherChars"))).concat("</otherChars>");
+                return xmlResponse;
+            case "txt":
+                String txtResponse = convertedResponse.toString().replace("{", "").replace("}", "").replace(",","\n");
+                return txtResponse;
+            default:
+                return "Unsupported file type!";
+        }
+    }
+
+
     private HashMap convertResponse(String apiResponse, String filetype) {
 
         HashMap<String, Integer> convertedResponse = new HashMap<>();
