@@ -84,7 +84,7 @@ PARAMS:<br>
 `converttype` (String) [json, csv, xml, txt]<br>
 `file` (String)<br><br>
 NOTE: <br>
-Endpoint accepts `file`, `filetype` and `downloadtype` params. Using built-in conversion function translates the `file` from `filetype` format to `converttype` format.<br><br>
+Endpoint accepts `file`, `filetype` and `converttype` params. Using built-in conversion function translates the `file` from `filetype` format to `converttype` format.<br><br>
 EXAMPLES:<br>
 
 TXT from JSON:
